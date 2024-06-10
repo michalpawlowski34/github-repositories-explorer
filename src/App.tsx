@@ -1,7 +1,9 @@
+import Explorer from "./components/organisms/Explorer";
+
 function App() {
   return (
-    <div>
-      <p className="text-red-500">App</p>
+    <div className="flex items-center justify-center min-h-screen bg-neutral-200">
+      <Explorer />
     </div>
   );
 }
