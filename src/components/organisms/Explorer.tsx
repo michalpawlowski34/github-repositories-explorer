@@ -1,27 +1,38 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SearchForm from "./forms/SearchForm";
-import { GithubService } from "../../services/GithubService";
+import UserTile from "../molecules/UserTile";
+import { UsersService } from "../../services/UsersService";
 
 const Explorer = () => {
   const [username, setUsername] = useState<string>("");
 
-  const { data, isFetching } = GithubService.useSearchUsers(username);
+  const { data, isFetching, isError, error } = UsersService.useSearch(username);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  const ExplorerBody = () => {
+    if (isError)
+      return (
+        <p className="mt-2 font-light text-center text-red-600">
+          There was an error fetching usernames: {error.message}
+        </p>
+      );
+    return (
+      <>
+        <p className="mt-2 text-sm text-neutral-500">
+          Showing users for "{username}"
+        </p>
+        <div className="flex flex-col items-center justify-center mt-10 space-y-3">
+          {data?.items.map((user) => (
+            <UserTile key={user.id} {...user} />
+          ))}
+        </div>
+      </>
+    );
+  };
 
   return (
     <div className="flex flex-col w-full max-w-5xl p-5">
       <SearchForm setUsername={setUsername} loading={isFetching} />
-      {data && (
-        <>
-          <p className="mt-2 text-sm text-neutral-500">
-            Showing users for "{username}"
-          </p>
-          <div className="flex items-center justify-center mt-10"></div>
-        </>
-      )}
+      {data && <ExplorerBody />}
     </div>
   );
 };
