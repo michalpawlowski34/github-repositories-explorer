@@ -1,16 +1,22 @@
-import React, { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { BeatLoader } from "react-spinners";
+import colors from "tailwindcss/colors";
+
+type Props = {
+  setUsername: Dispatch<SetStateAction<string>>;
+  loading: boolean;
+};
 
 type Inputs = {
   username: string;
 };
 
-const SearchForm = () => {
+const SearchForm = ({ setUsername, loading }: Props) => {
   const { register, handleSubmit } = useForm<Inputs>();
-  const [submittedValue, setSubmittedValue] = useState("");
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    setSubmittedValue(data.username);
+    setUsername(data.username);
   };
 
   return (
@@ -22,14 +28,15 @@ const SearchForm = () => {
       />
       <button
         type="submit"
-        className="py-3 transition-all rounded-sm bg-sky-500 hover:bg-sky-600 text-neutral-50"
+        disabled={loading}
+        className="flex items-center justify-center h-12 transition-all rounded-sm bg-sky-500 hover:bg-sky-600 text-neutral-50"
       >
-        Search
+        {loading ? (
+          <BeatLoader loading={loading} color={colors.neutral[50]} size={10} />
+        ) : (
+          <p>Search</p>
+        )}
       </button>
-
-      {submittedValue && (
-        <p className="text-neutral-500">Showing users for "{submittedValue}"</p>
-      )}
     </form>
   );
 };
