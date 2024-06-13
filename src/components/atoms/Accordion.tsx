@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import { HiChevronDown } from "react-icons/hi";
 
 type AccordionContextType = {
@@ -18,10 +24,22 @@ const useAccordionContext = () => {
   return context;
 };
 
-const Accordion = ({ children }: { children: ReactNode }) => {
+type AccordionProps = {
+  children: ReactNode;
+  onToggle?: (isOpen: boolean) => void;
+};
+
+const Accordion = ({ children, onToggle }: AccordionProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen((prev) => !prev);
+
+  useEffect(() => {
+    if (onToggle) {
+      onToggle(isOpen);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   return (
     <AccordionContext.Provider value={{ isOpen, toggle }}>

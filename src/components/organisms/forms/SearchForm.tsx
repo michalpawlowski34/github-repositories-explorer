@@ -4,7 +4,7 @@ import { BeatLoader } from "react-spinners";
 import colors from "tailwindcss/colors";
 
 type Props = {
-  setUsername: Dispatch<SetStateAction<string>>;
+  setInputQuery: Dispatch<SetStateAction<string>>;
   loading: boolean;
 };
 
@@ -12,11 +12,11 @@ type Inputs = {
   username: string;
 };
 
-const SearchForm = ({ setUsername, loading }: Props) => {
+const SearchForm = ({ setInputQuery, loading }: Props) => {
   const { register, handleSubmit } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    setUsername(data.username);
+    setInputQuery(data.username);
   };
 
   return (
@@ -32,7 +32,7 @@ const SearchForm = ({ setUsername, loading }: Props) => {
         className="flex items-center justify-center h-12 transition-all rounded-sm bg-sky-500 hover:bg-sky-600 text-neutral-50"
       >
         {loading ? (
-          <BeatLoader loading={loading} color={colors.neutral[50]} size={10} />
+          <BeatLoader color={colors.neutral[50]} size={10} />
         ) : (
           <p>Search</p>
         )}

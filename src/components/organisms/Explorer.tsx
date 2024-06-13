@@ -4,9 +4,10 @@ import UserTile from "../molecules/UserTile";
 import { UsersService } from "../../services/UsersService";
 
 const Explorer = () => {
-  const [username, setUsername] = useState<string>("");
+  const [inputQuery, setInputQuery] = useState<string>("");
 
-  const { data, isFetching, isError, error } = UsersService.useSearch(username);
+  const { data, isFetching, isError, error } =
+    UsersService.useSearch(inputQuery);
 
   const ExplorerBody = () => {
     if (isError)
@@ -18,7 +19,7 @@ const Explorer = () => {
     return (
       <>
         <p className="mt-2 text-sm text-neutral-500">
-          Showing users for "{username}"
+          Showing users for "{inputQuery}"
         </p>
         <div className="flex flex-col items-center justify-center mt-10 space-y-3">
           {data?.items.map((user) => (
@@ -31,7 +32,7 @@ const Explorer = () => {
 
   return (
     <div className="flex flex-col w-full max-w-5xl p-5">
-      <SearchForm setUsername={setUsername} loading={isFetching} />
+      <SearchForm setInputQuery={setInputQuery} loading={isFetching} />
       {data && <ExplorerBody />}
     </div>
   );
